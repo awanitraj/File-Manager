@@ -1,31 +1,26 @@
-// components/UploadDropzone.tsx
 'use client';
 
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-type UploadDropzoneProps = {
-  onFilesSelected: (files: File[]) => void;
-};
-
-export default function UploadDropzone({ onFilesSelected }: UploadDropzoneProps) {
+export default function UploadPage() {
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    onFilesSelected(acceptedFiles);
-  }, [onFilesSelected]);
+    console.log(acceptedFiles);
+   
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div
-      {...getRootProps()}
-      className="cursor-pointer border-2 border-dashed border-blue-500 p-10 text-center rounded-lg bg-white shadow-md transition hover:bg-blue-50"
-    >
+    <div {...getRootProps()} className="border-2 border-dashed border-blue-400 p-10 text-center cursor-pointer bg-white shadow rounded-lg">
       <input {...getInputProps()} />
-      {isDragActive ? (
-        <p className="text-blue-700 font-semibold">Drop the files here...</p>
-      ) : (
-        <p className="text-gray-600">Drag and drop files here, or click to select files</p>
-      )}
+      {
+        isDragActive ? (
+          <p>Drop the files here...</p>
+        ) : (
+          <p>Drag & drop some files here, or click to select files</p>
+        )
+      }
     </div>
   );
 }

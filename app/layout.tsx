@@ -1,20 +1,19 @@
 // app/layout.tsx
-
-import '@/app/globals.css'; // Import global styles
-import Navbar from '@/components/Navbar'; // Import Navbar component
-import styles from './page.module.css';
+import './globals.css'; // ✅ important
+import { ReactNode } from 'react';
+import Navbar from '@/components/Navbar';
 
 export const metadata = {
   title: 'File Manager',
-  description: 'Upload, manage, and download your files with ease.',
+  description: 'A simple file manager app with Firebase',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-gray-100 text-gray-900 font-sans">
-        <Navbar /> {/* ✅ Shared Navbar */}
-        <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
+      <body className="bg-gray-100 text-gray-900">
+        <Navbar />
+        <main className="p-4">{children}</main>
       </body>
     </html>
   );
