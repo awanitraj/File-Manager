@@ -1,23 +1,10 @@
 /* app/globals.css */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Optional: your custom styles */
+/* Optional custom styles */
 body {
-  @apply bg-white text-black dark:bg-gray-950 dark:text-white;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Scrollbar styling (optional) */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-}
