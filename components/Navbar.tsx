@@ -1,12 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react'; // Icons (install lucide-react)
+import { useState, useEffect } from 'react';
+import { Menu, X, Moon, Sun } from 'lucide-react';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true); // Avoid hydration mismatch
+  }, []);
 
   return (
     <nav className="bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 shadow-md sticky top-0 z-50">
@@ -25,10 +32,20 @@ export default function Navbar() {
             <Link href="/files" className="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My Files</Link>
           </div>
 
-          {/* User Avatar / Auth Placeholder */}
+          {/* User + Theme Toggle */}
           <div className="flex items-center gap-4">
-            {/* Replace with user image if using next-auth */}
-            <div className="h-8 w-8 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            {/* Avatar placeholder */}
+            <div className="h-8 w-8 rounded-full bg-gray-300 dark:bg-gray-600" />
+
+            {/* Dark Mode Toggle */}
+            {mounted && (
+              <button
+                className="text-gray-700 dark:text-gray-200"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              >
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
+            )}
 
             {/* Mobile Menu Toggle */}
             <button

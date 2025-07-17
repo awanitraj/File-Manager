@@ -1,26 +1,51 @@
 'use client';
 
-import { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useState } from 'react';
 
-export default function UploadPage() {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    console.log(acceptedFiles);
-   
-  }, []);
+export default function UploadDropzone() {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadedUrl, setUploadedUrl] = useState('');
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setSelectedFile(file);
+    setIsUploading(true);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+    setIsUploading(false);
+
+    if (response.ok) {
+      setUploadedUrl(data.url);
+      alert('File uploaded successfully!');
+    } else {
+      alert('Upload failed: ' + data.error);
+    }
+  };
 
   return (
-    <div {...getRootProps()} className="border-2 border-dashed border-blue-400 p-10 text-center cursor-pointer bg-white shadow rounded-lg">
-      <input {...getInputProps()} />
-      {
-        isDragActive ? (
-          <p>Drop the files here...</p>
-        ) : (
-          <p>Drag & drop some files here, or click to select files</p>
-        )
-      }
+    <div className="flex flex-col items-center">
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="mb-4"
+      />
+      {isUploading && <p>Uploading...</p>}
+      {uploadedUrl && (
+        <p className="text-green-600 mt-2">
+          Uploaded! <a href={uploadedUrl} target="_blank" rel="noopener noreferrer">View File</a>
+        </p>
+      )}
     </div>
   );
 }
